@@ -1,0 +1,93 @@
+[
+    {
+        "name": "id",
+        "dbType": "increments",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": true,
+        "inForm": false,
+        "inIndex": false,
+        "inView": false
+    },
+    {
+        "name": "first_name",
+        "dbType": "string",
+        "htmlType": "",
+        "validations": "required",
+        "searchable": true,
+        "fillable": true
+    },
+    {
+        "name": "last_name",
+        "dbType": "string",
+        "htmlType": "",
+        "validations": "required",
+        "searchable": true,
+        "fillable": true
+    },
+    {
+        "name": "gender",
+        "dbType": "string,10",
+        "htmlType": "",
+        "searchable": true,
+        "fillable": true
+    },
+    {
+        "name": "phone",
+        "dbType": "string",
+        "htmlType": "",
+        "searchable": true,
+        "fillable": true
+    },
+    {
+        "name": "email",
+        "dbType": "string",
+        "htmlType": "",
+        "searchable": true,
+        "fillable": true
+    },
+    {
+        "name": "address",
+        "dbType": "text",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "profile",
+        "dbType": "text",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "description",
+        "dbType": "text",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "user_id",
+        "dbType": "integer:unsigned:default,0:foreign,users,id",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "created_by",
+        "dbType": "integer:unsigned:default,0:foreign,users,id",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "updated_by",
+        "dbType": "integer:unsigned:default,0:foreign,users,id",
+        "htmlType": "",
+        "fillable": true
+    },
+    {
+        "name": "deleted_by",
+        "dbType": "integer:unsigned:default,0:foreign,users,id",
+        "htmlType": "",
+        "fillable": true
+    }
+]
