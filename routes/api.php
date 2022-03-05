@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\API\AuthAPIController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthAPIController;
+use App\Http\Controllers\API\UserAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +24,12 @@ Route::group([
     Route::get('/email/resend', [AuthAPIController::class, 'resend'])->name('verification.resend');
     Route::middleware('auth:api')->group(function () {
         Route::resource('users', 'UserAPIController');
+        Route::get('/current_user', [UserAPIController::class, 'currentUser']);
         Route::resource('curriculum_vitaes', 'CurriculumVitaeAPIController');
         Route::resource('roles', 'RoleAPIController');
         Route::resource('permissions', 'PermissionAPIController');
+        Route::resource('issues', 'IssueAPIController');
+        Route::resource('merchants', 'MerchantAPIController');
+        Route::post('/logout', [AuthAPIController::class, 'logout']);
     });
 });
-
-
-Route::resource('issues', App\Http\Controllers\API\IssueAPIController::class);
-
-
-Route::resource('merchants', App\Http\Controllers\API\MerchantAPIController::class);

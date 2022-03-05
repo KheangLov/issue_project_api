@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\AppBaseController;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
-use Illuminate\Support\Facades\Route;
-use App\Http\Requests\API\LoginAPIRequest;
-use App\Http\Requests\API\RegisterAPIRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Role;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\API\LoginAPIRequest;
+use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\RegisterAPIRequest;
 
 class AuthAPIController extends AppBaseController
 {
@@ -71,12 +73,9 @@ class AuthAPIController extends AppBaseController
         if (empty($user)) {
             return $this->sendError('User not created!', 400);
         }
-        $user->roles()->syncWithoutDetaching([optional($this->roleRepository->whereFirst('name', 'user'))->id]);
 
-        $token = $this->oauthLogin($request);
-
-        if (empty($token)) {
-            return $this->sendError('User not logged in!', 400);
+        if ($request->profile) {
+            dd($request->profile);
         }
 
         request()->request->add([
@@ -84,7 +83,6 @@ class AuthAPIController extends AppBaseController
         ]);
         return $this->sendResponse([
             'user' => new UserResource($user),
-            'token' => $token
         ], 'User created and logged in successfully.');
     }
 
@@ -147,9 +145,9 @@ class AuthAPIController extends AppBaseController
      */
     public function login(LoginAPIRequest $request)
     {
-        if (auth()->attempt([
-            'email' => $request->email,
-            'password' => $request->password
+        if (Auth::attempt([
+            'email' => trim($request->email),
+            'password' => trim($request->password)
         ])) {
             $token = $this->oauthLogin($request);
 
@@ -157,9 +155,12 @@ class AuthAPIController extends AppBaseController
                 return $this->sendError('User not logged in!', 400);
             }
 
+            // session(['client_access_token' => $token]);
+
             request()->request->add([
                 'auth' => true
             ]);
+            request()->session()->put('client_access_token', $token);
             return $this->sendResponse([
                 'user' => new UserResource(auth()->user()),
                 'token' => $token
@@ -203,4 +204,14 @@ class AuthAPIController extends AppBaseController
 
         return $this->respondWithMessage("Email verification link sent on your email id");
     }
+
+    public function logout(Request $request) {
+        $accessToken = auth()->user()->token();
+
+        $token = $request->user()->tokens->find($accessToken);
+        $token->revoke();
+
+        return $this->sendResponse([], 'You have been successfully logged out.');
+    }
+
 }

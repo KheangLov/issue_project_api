@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
+use Response;
+use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateUserAPIRequest;
 use App\Http\Requests\API\UpdateUserAPIRequest;
-use App\Models\User;
-use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\UserResource;
-use Response;
 
 /**
  * Class UserController
@@ -278,5 +279,10 @@ class UserAPIController extends AppBaseController
         $user->delete();
 
         return $this->sendSuccess('User deleted successfully');
+    }
+
+    public function currentUser()
+    {
+        return $this->sendResponse(new UserResource(Auth::user()), 'User retrieved successfully');
     }
 }

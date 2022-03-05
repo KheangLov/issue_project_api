@@ -18,7 +18,7 @@
         "infyomlabs/swagger-generator": "dev-master",
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.3",
-        "laravel/sanctum": "^2.11",
+        "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.2",
         "netojose/laravel-api-explorer": "^2.0",

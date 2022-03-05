@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ActionByTrait;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,18 +28,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Merchant extends Model
 {
     use SoftDeletes;
-
     use HasFactory;
+    use ActionByTrait;
 
     public $table = 'merchants';
-    
-
     protected $dates = ['deleted_at'];
-
-
-
     public $fillable = [
-        
+
     ];
 
     /**
@@ -47,7 +43,7 @@ class Merchant extends Model
      * @var array
      */
     protected $casts = [
-        
+
     ];
 
     /**
@@ -56,8 +52,7 @@ class Merchant extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
 }

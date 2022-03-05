@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'superadmin',
-                'password' => Hash::make('not4youbro'),
+                'password' => 'not4youbro',
             ]
         );
         $user->roles()->syncWithoutDetaching([$role->id]);

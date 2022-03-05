@@ -19,7 +19,9 @@ class UserResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
+                'profile' => $this->profile,
                 'is_disabled' => $this->is_disabled,
+                'access_token' => request()->session()->get('client_access_token'),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at
             ];
