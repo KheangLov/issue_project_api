@@ -61,13 +61,9 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
-
-        return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully');
+        $users = $this->userRepository->getUsersAndFilter($request);
+        return $users;
+        return UserResource::collection($users);
     }
 
     /**
@@ -229,6 +225,27 @@ class UserAPIController extends AppBaseController
         return $this->sendResponse(new UserResource($user), 'User updated successfully');
     }
 
+    public function disable($id)
+    {
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            return $this->sendError('User not found');
+        }
+
+        $isDisabled = !$user->is_disabled;
+        $user = $this->userRepository->update([
+            'is_disabled' => $isDisabled
+        ], $id);
+
+        $message = 'Disabled';
+        if (!$isDisabled) {
+            $message = 'Enable';
+        }
+
+        return $this->sendResponse(new UserResource($user), "$message successfully");
+    }
+
     /**
      * @param int $id
      * @return Response
@@ -267,7 +284,7 @@ class UserAPIController extends AppBaseController
      *      )
      * )
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         /** @var User $user */
         $user = $this->userRepository->find($id);
@@ -276,9 +293,27 @@ class UserAPIController extends AppBaseController
             return $this->sendError('User not found');
         }
 
-        $user->delete();
+        $forceDelete = $request->force_delete ?? '';
+        if ($forceDelete) {
+            $user->forceDelete();
+        } else {
+            $user->delete();
+        }
 
         return $this->sendSuccess('User deleted successfully');
+    }
+
+    public function restore($id)
+    {
+        $user = $this->userRepository->findWithTrash($id);
+
+        if (empty($user)) {
+            return $this->sendError('User not found');
+        }
+
+        $user->restore();
+
+        return $this->sendSuccess('User retored successfully');
     }
 
     public function currentUser()

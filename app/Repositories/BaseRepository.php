@@ -68,9 +68,9 @@ abstract class BaseRepository
      * @param array $columns
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage, $columns = ['*'])
+    public function paginate($perPage, $columns = ['*'], $search = [])
     {
-        $query = $this->allQuery();
+        $query = $this->allQuery($search);
 
         return $query->paginate($perPage, $columns);
     }
@@ -152,6 +152,13 @@ abstract class BaseRepository
         $query = $this->model->newQuery();
 
         return $query->find($id, $columns);
+    }
+
+    public function findWithTrash($id, $columns = ['*'])
+    {
+        $query = $this->model->newQuery();
+
+        return $query->withTrashed()->find($id, $columns);
     }
 
     /**

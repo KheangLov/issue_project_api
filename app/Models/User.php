@@ -40,6 +40,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'created_by',
         'updated_by',
         'deleted_by',
+        'is_disabled',
     ];
 
     /**
@@ -54,6 +55,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'deleted_by' => 'integer',
+        'is_disabled' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 

@@ -43,4 +43,24 @@ class UserRepository extends BaseRepository
     {
         return $this->model->create($request->only(['name', 'email', 'password']));
     }
+
+    public function getUsersAndFilter($request)
+    {
+        $perPage = $request->per_page ?? 10;
+        $search = $request->search ?? '';
+        $trashed = trim($request->trashed) ?? '';
+
+        $query = $this->model;
+        if ($trashed) {
+            return $trashed;
+            $query = $query->onlyTrashed();
+        }
+
+        if ($search) {
+            $query = $query->orWhere('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('email', 'LIKE', '%' . $search . '%');
+        }
+
+        return $query->paginate($perPage);
+    }
 }

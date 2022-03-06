@@ -24,6 +24,8 @@ Route::group([
     Route::get('/email/resend', [AuthAPIController::class, 'resend'])->name('verification.resend');
     Route::middleware('auth:api')->group(function () {
         Route::resource('users', 'UserAPIController');
+        Route::get('/users/restore/{id}', [UserAPIController::class, 'restore']);
+        Route::put('/users/disable/{id}', [UserAPIController::class, 'disable']);
         Route::get('/current_user', [UserAPIController::class, 'currentUser']);
         Route::resource('curriculum_vitaes', 'CurriculumVitaeAPIController');
         Route::resource('roles', 'RoleAPIController');

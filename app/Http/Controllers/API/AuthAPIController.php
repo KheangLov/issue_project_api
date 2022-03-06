@@ -155,15 +155,12 @@ class AuthAPIController extends AppBaseController
                 return $this->sendError('User not logged in!', 400);
             }
 
-            // session(['client_access_token' => $token]);
-
             request()->request->add([
                 'auth' => true
             ]);
-            request()->session()->put('client_access_token', $token);
             return $this->sendResponse([
                 'user' => new UserResource(auth()->user()),
-                'token' => $token
+                'token' => $token,
             ], 'User logged in successfully.');
         }
         return $this->sendError('Unauthorized!', 401);
