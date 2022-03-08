@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthAPIController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\API\MerchantAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::group([
         Route::resource('permissions', 'PermissionAPIController');
         Route::resource('issues', 'IssueAPIController');
         Route::resource('merchants', 'MerchantAPIController');
+        Route::get('/merchants/restore/{id}', [MerchantAPIController::class, 'restore']);
         Route::post('/logout', [AuthAPIController::class, 'logout']);
     });
 });

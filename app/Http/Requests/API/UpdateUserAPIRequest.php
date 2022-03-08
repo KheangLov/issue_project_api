@@ -24,8 +24,15 @@ class UpdateUserAPIRequest extends APIRequest
      */
     public function rules()
     {
+        if (request()->has('password')) {
+            return [
+                'password' => 'required|confirmed|min:8',
+            ];
+        }
+
+        $id = $this->id ?? $this->user;
         $rules = User::$rules;
-        $rules['email'] = "required|email|unique:users,email,$this->id|max:100";
+        $rules['email'] = "required|email|unique:users,email," . $id . "|max:100";
         return $rules;
     }
 }

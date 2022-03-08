@@ -62,7 +62,6 @@ class UserAPIController extends AppBaseController
     public function index(Request $request)
     {
         $users = $this->userRepository->getUsersAndFilter($request);
-        return $users;
         return UserResource::collection($users);
     }
 
@@ -287,32 +286,13 @@ class UserAPIController extends AppBaseController
     public function destroy($id, Request $request)
     {
         /** @var User $user */
-        $user = $this->userRepository->find($id);
-
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
-
-        $forceDelete = $request->force_delete ?? '';
-        if ($forceDelete) {
-            $user->forceDelete();
-        } else {
-            $user->delete();
-        }
-
+        $this->userRepository->destoryAndDelete($id, $request);
         return $this->sendSuccess('User deleted successfully');
     }
 
     public function restore($id)
     {
-        $user = $this->userRepository->findWithTrash($id);
-
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
-
-        $user->restore();
-
+        $this->userRepository->restoreData($id);
         return $this->sendSuccess('User retored successfully');
     }
 

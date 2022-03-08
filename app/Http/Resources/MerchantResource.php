@@ -16,8 +16,19 @@ class MerchantResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'branch' => $this->branch,
+            'website' => $this->website,
+            'app' => $this->app,
+            'description' => $this->description,
+            'created_at' => $this->created_at ?? 'N/A',
+            'updated_at' => $this->updated_at ?? 'N/A',
+            'deleted_at' => $this->deleted_at ?? 'N/A',
+            'created_by' => $this->CreatedByFullName ?? 'N/A',
+            'updated_by' => $this->UpdatedByFullName ?? 'N/A',
+            'deleted_by' => $this->DeletedByFullName ?? 'N/A',
         ];
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel as Model;
 use App\Traits\ActionByTrait;
+use App\Traits\ImageUploadTrait;
+use App\Models\BaseModel as Model;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
@@ -28,9 +29,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use HasRoles;
     use Notifiable;
     use ActionByTrait;
+    use ImageUploadTrait;
 
     public $table = 'users';
-
     protected $dates = ['deleted_at'];
 
     public $fillable = [
@@ -41,6 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'updated_by',
         'deleted_by',
         'is_disabled',
+        'profile',
     ];
 
     /**
@@ -67,11 +69,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $rules = [
         'name' => 'required|min:4|max:50',
         'email' => 'required|email|unique:users|max:100',
-        'password' => 'required|min:8',
     ];
+
+    protected static function imageField() {
+        return 'profile';
+    }
 
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    public function setProfileAttribute($value)
+    {
+        if ($value) {
+            $this->cloudderImageUpload($value, 'profile');
+        }
+    }
+
 }

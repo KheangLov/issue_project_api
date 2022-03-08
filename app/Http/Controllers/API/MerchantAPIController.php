@@ -60,13 +60,8 @@ class MerchantAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $merchants = $this->merchantRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
-
-        return $this->sendResponse(MerchantResource::collection($merchants), 'Merchants retrieved successfully');
+        $merchants = $this->merchantRepository->getMerchantsAndFilter($request);
+        return MerchantResource::collection($merchants);
     }
 
     /**
@@ -266,17 +261,15 @@ class MerchantAPIController extends AppBaseController
      *      )
      * )
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        /** @var Merchant $merchant */
-        $merchant = $this->merchantRepository->find($id);
-
-        if (empty($merchant)) {
-            return $this->sendError('Merchant not found');
-        }
-
-        $merchant->delete();
-
+        $this->merchantRepository->destoryAndDelete($id, $request);
         return $this->sendSuccess('Merchant deleted successfully');
+    }
+
+    public function restore($id)
+    {
+        $this->merchantRepository->restoreData($id);
+        return $this->sendSuccess('Merchant retored successfully');
     }
 }

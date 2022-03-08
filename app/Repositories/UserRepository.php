@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\BaseRepository;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserRepository
@@ -48,19 +47,23 @@ class UserRepository extends BaseRepository
     {
         $perPage = $request->per_page ?? 10;
         $search = $request->search ?? '';
-        $trashed = trim($request->trashed) ?? '';
+        $trashed = filter_var($request->trashed, FILTER_VALIDATE_BOOLEAN);
 
-        $query = $this->model;
+        $query = $this->model->where('id', '!=', 1);
         if ($trashed) {
-            return $trashed;
             $query = $query->onlyTrashed();
         }
 
         if ($search) {
-            $query = $query->orWhere('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('email', 'LIKE', '%' . $search . '%');
+            $query = $query->where(function ($q) use ($search) {
+                $q->orWhere('name', 'ILIKE', '%' . $search . '%')
+                    ->orWhere('email', 'ILIKE', '%' . $search . '%');
+            });
         }
 
-        return $query->paginate($perPage);
+        return $query
+            ->orderBy('updated_at', 'DESC')
+            ->paginate($perPage);
     }
+
 }

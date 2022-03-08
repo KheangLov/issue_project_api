@@ -24,6 +24,8 @@ class CreateUserAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return User::$rules;
+        $rules = User::$rules;
+        $rules['password'] = 'required|confirmed|min:8';
+        return $rules;
     }
 }

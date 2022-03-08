@@ -2,8 +2,9 @@
 
 namespace App\Repositories;
 
-use Illuminate\Container\Container as Application;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Container\Container as Application;
 
 
 abstract class BaseRepository
@@ -201,5 +202,37 @@ abstract class BaseRepository
     public function whereFirst($field, $value)
     {
         return $this->model->where($field, $value)->first();
+    }
+
+    public function softDelete($entry)
+    {
+        $isDeleted = $entry->delete();
+        if (Schema::hasColumn($entry->getTable(), 'deleted_by')) {
+            $entry->deleted_by = optional(auth()->user())->id;
+            $entry->save();
+        }
+        return $isDeleted;
+    }
+
+    public function destoryAndDelete($id, $request)
+    {
+        $query = $this->model->where('id', $id);
+        $forceDelete = filter_var($request->force_delete, FILTER_VALIDATE_BOOLEAN);
+
+        if ($forceDelete) {
+            return $query->withTrashed()->forceDelete();
+        }
+
+        return $this->softDelete($query->first());
+    }
+
+    public function restoreData($id)
+    {
+        $entry = $this->model->withTrashed()->find($id);
+        if ($entry->deleted_by) {
+            $entry->deleted_by = null;
+            $entry->save();
+        }
+        return $entry->restore();
     }
 }

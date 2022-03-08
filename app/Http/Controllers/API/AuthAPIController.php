@@ -149,6 +149,10 @@ class AuthAPIController extends AppBaseController
             'email' => trim($request->email),
             'password' => trim($request->password)
         ])) {
+            if (auth()->user()->is_disabled) {
+                return $this->sendError('User can not login!', 400);
+            }
+
             $token = $this->oauthLogin($request);
 
             if (empty($token)) {

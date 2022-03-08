@@ -9,6 +9,7 @@
         "appointer/swaggervel": "dev-master",
         "arcanedev/log-viewer": "^8.2",
         "awt/apilogger": "@dev",
+        "davejamesmiller/laravel-route-browser": "^1.1",
         "doctrine/dbal": "~2.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -16,6 +17,8 @@
         "infyomlabs/adminlte-templates": "^3.0",
         "infyomlabs/laravel-generator": "^3.0",
         "infyomlabs/swagger-generator": "dev-master",
+        "intervention/image": "^2.7",
+        "jrm2k6/cloudder": "^0.7.0",
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.3",
         "laravel/sanctum": "^2.14",
@@ -28,7 +31,6 @@
         "spatie/laravel-permission": "^5.5"
     },
     "require-dev": {
-        "davejamesmiller/laravel-route-browser": "^1.1",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

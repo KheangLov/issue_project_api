@@ -17,7 +17,7 @@ class MerchantRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        
+
     ];
 
     /**
@@ -36,5 +36,25 @@ class MerchantRepository extends BaseRepository
     public function model()
     {
         return Merchant::class;
+    }
+
+    public function getMerchantsAndFilter($request)
+    {
+        $perPage = $request->per_page ?? 10;
+        $search = $request->search ?? '';
+        $trashed = filter_var($request->trashed, FILTER_VALIDATE_BOOLEAN);
+
+        $query = $this->model;
+        if ($trashed) {
+            $query = $query->onlyTrashed();
+        }
+
+        if ($search) {
+            $query = $query->where('name', 'ILIKE', '%' . $search . '%');
+        }
+
+        return $query
+            ->orderBy('updated_at', 'DESC')
+            ->paginate($perPage);
     }
 }

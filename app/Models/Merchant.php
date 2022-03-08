@@ -34,7 +34,16 @@ class Merchant extends Model
     public $table = 'merchants';
     protected $dates = ['deleted_at'];
     public $fillable = [
-
+        'name',
+        'branch',
+        'phone',
+        'email',
+        'website',
+        'app',
+        'description',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**
@@ -43,7 +52,13 @@ class Merchant extends Model
      * @var array
      */
     protected $casts = [
-
+        'name' => 'string',
+        'email' => 'string',
+        'phone' => 'string',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'deleted_by' => 'integer',
+        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -52,7 +67,8 @@ class Merchant extends Model
      * @var array
      */
     public static $rules = [
-
+        'name' => 'required|min:4|max:50',
+        'email' => 'email|max:100',
     ];
 
 }
