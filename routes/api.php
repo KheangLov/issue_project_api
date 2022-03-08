@@ -20,7 +20,7 @@ use App\Http\Controllers\API\MerchantAPIController;
 Route::group([
     'prefix' => 'v1',
 ], function () {
-    Route::post('/signin', [AuthAPIController::class, 'login']);
+    Route::post('/jolprer', [AuthAPIController::class, 'login']);
     Route::post('/register', [AuthAPIController::class, 'register']);
     Route::get('/email/verify/{id}', [AuthAPIController::class, 'verify'])->name('verification.verify');
     Route::get('/email/resend', [AuthAPIController::class, 'resend'])->name('verification.resend');
