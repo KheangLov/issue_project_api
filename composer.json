@@ -73,7 +73,8 @@
         "post-install-cmd": [
             "php artisan clear-compiled",
             "chmod -R 777 storage",
-            "php artisan passport:keys"
+            "php artisan passport:keys",
+            "chmod -R 777 storage/oauth-private.key storage/oauth-public.key"
         ]
     },
     "extra": {
