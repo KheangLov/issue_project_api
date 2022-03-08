@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthAPIController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\API\IssueAPIController;
 use App\Http\Controllers\API\MerchantAPIController;
 
 /*
@@ -32,8 +33,11 @@ Route::group([
         Route::resource('roles', 'RoleAPIController');
         Route::resource('permissions', 'PermissionAPIController');
         Route::resource('issues', 'IssueAPIController');
+        Route::get('/issues/restore/{id}', [IssueAPIController::class, 'restore']);
         Route::resource('merchants', 'MerchantAPIController');
         Route::get('/merchants/restore/{id}', [MerchantAPIController::class, 'restore']);
         Route::post('/logout', [AuthAPIController::class, 'logout']);
     });
+    Route::get('/ajax/merchants', [MerchantAPIController::class, 'merchantAjax']);
+    Route::post('/upload/ckeditor', [MerchantAPIController::class, 'uploadAjax']);
 });

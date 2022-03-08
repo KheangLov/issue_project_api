@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Traits\ActionByTrait;
 use Eloquent as Model;
+use App\Models\Merchant;
+use App\Traits\ActionByTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -34,7 +35,18 @@ class Issue extends Model
     public $table = 'issues';
     protected $dates = ['deleted_at'];
     public $fillable = [
-
+        'name',
+        'issue_type',
+        'status',
+        'api_type',
+        'resolution',
+        'description',
+        'issue_at',
+        'resolved_at',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'merchant_id',
     ];
 
     /**
@@ -43,7 +55,15 @@ class Issue extends Model
      * @var array
      */
     protected $casts = [
-
+        'name' => 'string',
+        'issue_type' => 'string',
+        'status' => 'string',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'deleted_by' => 'integer',
+        'merchant_id' => 'integer',
+        'issue_at' => 'datetime',
+        'resolved_at' => 'datetime',
     ];
 
     /**
@@ -52,8 +72,12 @@ class Issue extends Model
      * @var array
      */
     public static $rules = [
-
+        'name' => 'required|min:4|max:50',
     ];
 
+    public function merchant()
+    {
+        return $this->belongsTo(Merchant::class);
+    }
 
 }

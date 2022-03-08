@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use Response;
+use App\Models\Merchant;
+use Illuminate\Http\Request;
+use JD\Cloudder\Facades\Cloudder;
+use App\Http\Resources\MerchantResource;
+use App\Repositories\MerchantRepository;
+use App\Http\Controllers\AppBaseController;
+use App\Http\Resources\MerchantAjaxResource;
 use App\Http\Requests\API\CreateMerchantAPIRequest;
 use App\Http\Requests\API\UpdateMerchantAPIRequest;
-use App\Models\Merchant;
-use App\Repositories\MerchantRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\MerchantResource;
-use Response;
 
 /**
  * Class MerchantController
@@ -62,6 +64,24 @@ class MerchantAPIController extends AppBaseController
     {
         $merchants = $this->merchantRepository->getMerchantsAndFilter($request);
         return MerchantResource::collection($merchants);
+    }
+
+    public function merchantAjax(Request $request)
+    {
+        $merchants = $this->merchantRepository->getMerchantsAndFilter($request);
+        return MerchantAjaxResource::collection($merchants);
+    }
+
+    public function uploadAjax(Request $request)
+    {
+        $value = $request->file('upload')->getRealPath();
+        Cloudder::upload($value, null, [
+            "folder" => 'uploads/ckeditor',
+            "overwrite" => false,
+            "resource_type" => "image",
+        ]);
+
+        return response()->json(['url' => Cloudder::show(Cloudder::getPublicId(), ["secure" => "true"])]);
     }
 
     /**

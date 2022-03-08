@@ -58,7 +58,6 @@ class Merchant extends Model
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'deleted_by' => 'integer',
-        'email_verified_at' => 'datetime',
     ];
 
     /**

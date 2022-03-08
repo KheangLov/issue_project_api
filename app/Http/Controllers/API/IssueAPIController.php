@@ -60,13 +60,8 @@ class IssueAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $issues = $this->issueRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
-
-        return $this->sendResponse(IssueResource::collection($issues), 'Issues retrieved successfully');
+        $issues = $this->issueRepository->getIssuesAndFilter($request);
+        return IssueResource::collection($issues);
     }
 
     /**
@@ -266,17 +261,15 @@ class IssueAPIController extends AppBaseController
      *      )
      * )
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        /** @var Issue $issue */
-        $issue = $this->issueRepository->find($id);
-
-        if (empty($issue)) {
-            return $this->sendError('Issue not found');
-        }
-
-        $issue->delete();
-
+        $this->issueRepository->destoryAndDelete($id, $request);
         return $this->sendSuccess('Issue deleted successfully');
+    }
+
+    public function restore($id)
+    {
+        $this->issueRepository->restoreData($id);
+        return $this->sendSuccess('Issue retored successfully');
     }
 }
