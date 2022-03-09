@@ -66,30 +66,37 @@ class IssueRepository extends BaseRepository
             [
                 'text' => 'All Issues',
                 'count' => $model->count(),
+                'color' => 'primary',
             ],
             [
                 'text' => '<b>ISSUE TYPE:</b> Bug',
                 'count' => $model->where('issue_type', 'ILIKE', 'bug')->count(),
+                'color' => 'warning',
             ],
             [
                 'text' => '<b>ISSUE TYPE:</b> Improvement',
                 'count' => $model->where('issue_type', 'ILIKE', 'improvement')->count(),
+                'color' => 'info',
             ],
             [
                 'text' => '<b>Status:</b> Issued',
                 'count' => $model->where('status', 'ILIKE', 'issued')->count(),
+                'color' => 'danger',
             ],
             [
                 'text' => '<b>Status:</b> Resolved',
                 'count' => $model->where('status', 'ILIKE', 'resolved')->count(),
+                'color' => 'success',
             ],
             [
                 'text' => '<b>API Type:</b> Sandbox',
                 'count' => $model->where('api_type', 'ILIKE', 'sandbox')->count(),
+                'color' => 'light',
             ],
             [
                 'text' => '<b>API Type:</b> Production',
                 'count' => $model->where('api_type', 'ILIKE', 'production')->count(),
+                'color' => 'dark',
             ],
         ];
     }
