@@ -69,12 +69,12 @@ class IssueRepository extends BaseRepository
                 'color' => 'primary',
             ],
             [
-                'text' => 'ISSUE TYPE: Bug',
+                'text' => 'Issue Type: Bug',
                 'count' => $model->where('issue_type', 'ILIKE', 'bug')->count(),
                 'color' => 'warning',
             ],
             [
-                'text' => 'ISSUE TYPE: Improvement',
+                'text' => 'Issue Type: Improvement',
                 'count' => $model->where('issue_type', 'ILIKE', 'improvement')->count(),
                 'color' => 'info',
             ],
