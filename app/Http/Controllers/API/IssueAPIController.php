@@ -272,4 +272,10 @@ class IssueAPIController extends AppBaseController
         $this->issueRepository->restoreData($id);
         return $this->sendSuccess('Issue retored successfully');
     }
+
+    public function dashboard()
+    {
+        return response()->json($this->issueRepository->countData());
+    }
+
 }

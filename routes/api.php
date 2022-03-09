@@ -37,6 +37,7 @@ Route::group([
         Route::resource('merchants', 'MerchantAPIController');
         Route::get('/merchants/restore/{id}', [MerchantAPIController::class, 'restore']);
         Route::post('/logout', [AuthAPIController::class, 'logout']);
+        Route::get('/dashboard/issues/count', [IssueAPIController::class, 'dashboard']);
     });
     Route::get('/ajax/merchants', [MerchantAPIController::class, 'merchantAjax']);
     Route::post('/upload/ckeditor', [MerchantAPIController::class, 'uploadAjax']);
