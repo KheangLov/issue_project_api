@@ -63,31 +63,31 @@ class IssueRepository extends BaseRepository
         $model = $this->model;
 
         return [
-            'all_issue' => [
+            [
                 'text' => 'All Issues',
                 'count' => $model->count(),
             ],
-            'bug' => [
+            [
                 'text' => '<b>ISSUE TYPE:</b> Bug',
                 'count' => $model->where('issue_type', 'ILIKE', 'bug')->count(),
             ],
-            'improvement' => [
+            [
                 'text' => '<b>ISSUE TYPE:</b> Improvement',
                 'count' => $model->where('issue_type', 'ILIKE', 'improvement')->count(),
             ],
-            'issued' => [
+            [
                 'text' => '<b>Status:</b> Issued',
                 'count' => $model->where('status', 'ILIKE', 'issued')->count(),
             ],
-            'resolved' => [
+            [
                 'text' => '<b>Status:</b> Resolved',
                 'count' => $model->where('status', 'ILIKE', 'resolved')->count(),
             ],
-            'sandbox' => [
+            [
                 'text' => '<b>API Type:</b> Sandbox',
                 'count' => $model->where('api_type', 'ILIKE', 'sandbox')->count(),
             ],
-            'production' => [
+            [
                 'text' => '<b>API Type:</b> Production',
                 'count' => $model->where('api_type', 'ILIKE', 'production')->count(),
             ],
