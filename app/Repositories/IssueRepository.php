@@ -42,6 +42,9 @@ class IssueRepository extends BaseRepository
     {
         $perPage = $request->per_page ?? 10;
         $search = $request->search ?? '';
+        $issueType = $request->issue_type ?? '';
+        $status = $request->status ?? '';
+        $apiType = $request->api_type ?? '';
         $trashed = filter_var($request->trashed, FILTER_VALIDATE_BOOLEAN);
 
         $query = $this->model;
@@ -51,6 +54,18 @@ class IssueRepository extends BaseRepository
 
         if ($search) {
             $query = $query->where('name', 'ILIKE', '%' . $search . '%');
+        }
+
+        if ($issueType) {
+            $query = $query->where('issue_type', 'ILIKE', $issueType);
+        }
+
+        if ($status) {
+            $query = $query->where('status', 'ILIKE', $status);
+        }
+
+        if ($apiType) {
+            $query = $query->where('api_type', 'ILIKE', $apiType);
         }
 
         return $query
