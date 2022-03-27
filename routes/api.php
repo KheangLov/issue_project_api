@@ -33,6 +33,7 @@ Route::group([
         Route::resource('roles', 'RoleAPIController');
         Route::resource('permissions', 'PermissionAPIController');
         Route::resource('issues', 'IssueAPIController');
+        Route::resource('addresses', 'AddressAPIController');
         Route::get('/issues/restore/{id}', [IssueAPIController::class, 'restore']);
         Route::resource('merchants', 'MerchantAPIController');
         Route::get('/merchants/restore/{id}', [MerchantAPIController::class, 'restore']);
