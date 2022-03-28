@@ -44,44 +44,50 @@ class AddressRepository extends BaseRepository
     public function addressBoundary($request)
     {
         try {
-            // Storage::disk('public')->exists('file.jpg');
-            $code = $request->code ?? '';
-            $subLevel = $request->sub_level ?? true;
-            $addresses = $this->model
-                ->selectRaw('_code AS admin_code, boundary, center, _name_en, _name_kh, _type_en AS type')
-                ->whereNotNull('boundary');
-            if ($subLevel) {
-                if (!$code) {
-                    $addresses = $addresses->whereRaw("LENGTH(_code) = 2");
+            $disk = 'public';
+            $file = 'boundary/cambodia_boundary.geojson';
+            if (!Storage::disk($disk)->exists($file)) {
+                $code = $request->code ?? '';
+                $subLevel = $request->sub_level ?? true;
+                $addresses = $this->model
+                    ->selectRaw('_code AS admin_code, boundary, center, _name_en, _name_kh, _type_en AS type')
+                    ->whereNotNull('boundary');
+
+                if ($subLevel) {
+                    if (!$code) {
+                        $addresses = $addresses->whereRaw("LENGTH(_code) = 2");
+                    } else {
+                        $addresses = $addresses->where("_code", "LIKE", $code . '__');
+                    }
                 } else {
-                    $addresses = $addresses->where("_code", "LIKE", $code . '__');
+                    if (!$code) {
+                        throw new Exception('Error');
+                    }
+                    $addresses = $addresses->where('_code', $code);
                 }
-            } else {
-                if (!$code) {
-                    throw new Exception('Error');
-                }
-                $addresses = $addresses->where('_code', $code);
+                // $str = str_replace(array(' ', '<', '>', '&', '{', '}', '*'), array('-'), $str);
+
+                $geoJson = [
+                    'type' => 'FeatureCollection',
+                    'name' => 'cambodia_boundary',
+                    'features' => []
+                ];
+
+                $addresses
+                    ->take(500)
+                    ->get()
+                    ->each(function($v) use (&$geoJson) {
+                        $boundary = (array)json_decode($v->boundary);
+                        $boundary['id'] = $v->admin_code;
+                        $boundary['properties']['id'] = $v->admin_code;
+                        $boundary['properties']['name'] = $v->_name_en;
+                        $geoJson['features'][] = $boundary;
+                    });
+
+                Storage::disk($disk)->put($file, json_encode($geoJson));
             }
-            // $str = str_replace(array(' ', '<', '>', '&', '{', '}', '*'), array('-'), $str);
 
-            $geoJson = [
-                'type' => 'FeatureCollection',
-                'name' => 'cambodia_boundary',
-                'features' => []
-            ];
-
-            $addresses
-                ->take(500)
-                ->get()
-                ->each(function($v) use (&$geoJson) {
-                    $boundary = (array)json_decode($v->boundary);
-                    $boundary['id'] = $v->admin_code;
-                    $boundary['properties']['id'] = $v->admin_code;
-                    $boundary['properties']['name'] = $v->_name_en;
-                    $geoJson['features'][] = $boundary;
-                });
-            Storage::disk('public')->put('boundary/cambodia_boundary.geojson', json_encode($geoJson));
-            return Storage::disk('public')->url('boundary/cambodia_boundary.geojson');
+            return Storage::disk($disk)->url($file);
         } catch (Exception $th) {
             Log::error(self::class. '::' . __FUNCTION__ . '() : ' . $th);
             return false;
