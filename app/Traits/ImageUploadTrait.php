@@ -55,7 +55,6 @@ trait ImageUploadTrait {
 
             $this->attributes[$attributeName] = $filePath;
         } else {
-
             if ($return) {
                 return $value;
             }
@@ -72,22 +71,10 @@ trait ImageUploadTrait {
                 "overwrite" => false,
                 "resource_type" => "image",
                 "responsive" => true,
-                "transformation" => [
-                    "quality" => "70",
-                    "width" => "250",
-                    "height" => "250",
-                    "crop" => "scale"
-                ]
             ]);
 
             $publicId = Cloudder::getPublicId();
-            $imageUrl = Cloudder::show($publicId, [
-                "width" => 250,
-                "height" => 250,
-                "crop" => "scale",
-                "quality" => 70,
-                "secure" => "true"
-            ]);
+            $imageUrl = Cloudder::show($publicId);
 
             $this->attributes[$attributeName] = $imageUrl;
         } else {
