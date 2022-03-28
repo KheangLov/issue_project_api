@@ -78,7 +78,7 @@
             "php artisan storage:link",
             "chmod -R 777 public/",
             "chmod -R 777 storage/app/public",
-            "chmod -R 777 storage/app/boundary"
+            "chmod -R 777 storage/app/public/boundary"
         ]
     },
     "extra": {
