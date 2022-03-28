@@ -45,7 +45,7 @@ class AddressRepository extends BaseRepository
             $code = $request->code ?? '';
             $subLevel = $request->sub_level ?? true;
             $addresses = $this->model
-                ->selectRaw('_code AS admin_code, boundary, center')
+                ->selectRaw('_code AS admin_code, boundary, center, _name_en, _name_kh, _type_en AS type')
                 ->whereNotNull('boundary');
 
             if ($subLevel) {
