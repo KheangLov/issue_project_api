@@ -75,7 +75,7 @@
             "chmod -R 775 storage",
             "php artisan passport:keys",
             "chmod -R 775 storage/oauth-private.key storage/oauth-public.key",
-            "php artisan storage:link --force",
+            "php artisan storage:link",
             "chmod -R 775 public"
         ]
     },
