@@ -13,7 +13,7 @@ trait ImageUploadTrait {
     {
         parent::boot();
         static::deleting(function ($obj) {
-            Storage::disk('public')->delete($obj->{static::imageField()});
+            Storage::disk('storage')->delete($obj->{static::imageField()});
         });
     }
 
@@ -21,7 +21,7 @@ trait ImageUploadTrait {
     {
         $attributeName = $attributes;
         // or use your own disk, defined in config/filesystems.php
-        $disk = 'public';
+        $disk = 'storage';
         // destination path relative to the disk above
         $destinationPath = "uploads";
 
