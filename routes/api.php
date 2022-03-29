@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\API\AuthAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\API\IssueAPIController;
@@ -33,7 +35,7 @@ Route::group([
         Route::resource('roles', 'RoleAPIController');
         Route::resource('permissions', 'PermissionAPIController');
         Route::resource('issues', 'IssueAPIController');
-        Route::resource('addresses', 'AddressAPIController');
+        Route::resource('addresses', 'AddressAPIController')->middleware('allow.cors');
         Route::get('/issues/restore/{id}', [IssueAPIController::class, 'restore']);
         Route::resource('merchants', 'MerchantAPIController');
         Route::get('/merchants/restore/{id}', [MerchantAPIController::class, 'restore']);
@@ -42,4 +44,7 @@ Route::group([
     });
     Route::get('/ajax/merchants', [MerchantAPIController::class, 'merchantAjax']);
     Route::post('/upload/ckeditor', [MerchantAPIController::class, 'uploadAjax']);
+    Route::get('/files', function (Request $request) {
+        return Storage::disk('public')->get($request->filename);
+    });
 });
