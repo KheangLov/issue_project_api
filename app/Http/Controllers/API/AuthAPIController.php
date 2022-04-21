@@ -88,7 +88,7 @@ class AuthAPIController extends AppBaseController
 
     protected function oauthLogin(Request $request)
     {
-        $client = Client::where('password_client', true)->first();
+        $client = Client::where('password_client', true)->find(2);
         request()->request->add([
             "grant_type" => "password",
             "username" => $request->email,
