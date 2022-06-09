@@ -21,6 +21,7 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'profile' => $this->profile,
                 'is_disabled' => $this->is_disabled,
+                'roles' => $this->roles->pluck('name'),
                 'created_at' => $this->created_at ?? 'N/A',
                 'updated_at' => $this->updated_at ?? 'N/A',
                 'deleted_at' => $this->deleted_at ?? 'N/A',

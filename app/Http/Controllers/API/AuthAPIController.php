@@ -83,7 +83,7 @@ class AuthAPIController extends AppBaseController
         ]);
         return $this->sendResponse([
             'user' => new UserResource($user),
-        ], 'User created and logged in successfully.');
+        ], 'User created successfully.');
     }
 
     protected function oauthLogin(Request $request)

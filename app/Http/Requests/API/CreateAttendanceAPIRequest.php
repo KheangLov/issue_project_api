@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\API;
 
+use App\Models\Attendance;
 use InfyOm\Generator\Request\APIRequest;
 
-class RegisterAPIRequest extends APIRequest
+class CreateAttendanceAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +24,6 @@ class RegisterAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|min:4|max:50',
-            'email' => 'required|email|unique:users|max:100',
-            'password' => 'required|confirmed|min:8',
-            'profile' => 'mimes:jpeg,bmp,png|size:5000',
-        ];
+        return Attendance::$rules;
     }
 }

@@ -46,6 +46,8 @@ class UserRepository extends BaseRepository
     public function getUsersAndFilter($request)
     {
         $perPage = $request->per_page ?? 10;
+        $sort = $request->sort ?? 'updated_at';
+        $order = $request->order ?? 'DESC';
         $search = $request->search ?? '';
         $trashed = filter_var($request->trashed, FILTER_VALIDATE_BOOLEAN);
 
@@ -62,7 +64,7 @@ class UserRepository extends BaseRepository
         }
 
         return $query
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy($sort, $order)
             ->paginate($perPage);
     }
 

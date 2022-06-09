@@ -69,7 +69,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $rules = [
         'name' => 'required|min:4|max:50',
         'email' => 'required|email|unique:users|max:100',
-        'profile' => 'required|mimes:jpeg,bmp,png|size:5000',
+        'profile' => 'mimes:jpeg,bmp,png|size:5000',
     ];
 
     protected static function imageField() {

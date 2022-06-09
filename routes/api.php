@@ -32,6 +32,7 @@ Route::group([
         Route::put('/users/disable/{id}', [UserAPIController::class, 'disable']);
         Route::get('/current_user', [UserAPIController::class, 'currentUser']);
         Route::resource('curriculum_vitaes', 'CurriculumVitaeAPIController');
+        Route::resource('attendances', 'AttendanceAPIController');
         Route::resource('roles', 'RoleAPIController');
         Route::resource('permissions', 'PermissionAPIController');
         Route::resource('issues', 'IssueAPIController');

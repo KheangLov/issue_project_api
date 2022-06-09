@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'superadmin',
             'guard_name' => 'api',
         ]);
+        $admin = Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => 'api',
+        ]);
         Role::firstOrCreate([
             'name' => 'user',
             'guard_name' => 'api',
@@ -50,6 +54,16 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $user->roles()->syncWithoutDetaching([$role->id]);
+        $userAdmin = User::firstOrCreate(
+            [
+                'email' => 'admin@admin.com',
+            ],
+            [
+                'name' => 'admin',
+                'password' => 'not4youbro',
+            ]
+        );
+        $userAdmin->roles()->syncWithoutDetaching([$admin->id]);
         $this->call(AddressSeeder::class);
     }
 }
